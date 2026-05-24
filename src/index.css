@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bloom-pink: #f2c4ce;
+  --bloom-green: #2d5a27;
+  --bloom-cream: #fdf8f0;
+  --bloom-gold: #c9a84c;
+  --bloom-lavender: #e8d5f5;
+  --bloom-deep: #1a1a2e;
+}
+
+body {
+  @apply bg-bloom-cream text-bloom-green font-dmsans overflow-x-hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-cormorant;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Aurora Background */
+.aurora-bg {
+  background: linear-gradient(
+    -45deg, 
+    #f9c5d1, 
+    #e8d5f5, 
+    #c8e6c9, 
+    #fdf8f0
+  );
+  background-size: 400% 400%;
+  animation: aurora 15s ease infinite;
+}
+
+@keyframes aurora {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  @apply fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-bloom-gold pointer-events-none z-[9999] mix-blend-difference transition-transform duration-100 ease-out;
+}
+
+/* Transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
+}
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 500ms, transform 500ms;
+}
+
+/* Floating Petals */
+.petal {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+}

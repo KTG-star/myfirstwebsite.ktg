@@ -31,6 +31,7 @@ const LandingPage = () => {
   return (
     <div className="bg-bloom-cream">
       <Hero />
+      <div className="section-divider" />
 
       {/* Featured Bento Grid */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
@@ -132,8 +133,10 @@ const LandingPage = () => {
       </section>
 
       <Bestsellers />
+      <div className="section-divider" />
       
       <MoodQuiz />
+      <div className="section-divider" />
 
       {/* Testimonials */}
       <section className="py-24 px-6 bg-bloom-green text-bloom-cream overflow-hidden">

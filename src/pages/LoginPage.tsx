@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useAppContext } from '../context/AppContext';
-import { ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -77,7 +77,10 @@ const LoginPage = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-8 md:p-12 lg:p-24">
+      <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-12 lg:p-24 relative">
+        <Link to="/" className="absolute top-12 left-12 flex items-center gap-2 text-bloom-green/40 hover:text-bloom-green transition-all group font-bold text-xs uppercase tracking-widest">
+           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Home
+        </Link>
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

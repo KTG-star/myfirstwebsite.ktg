@@ -4,7 +4,8 @@ export interface Flower {
   category: string;
   description: string;
   price: number;
-  image: string;
+  image?: string;
+  photoIds: string[];
   stockQuantity: number;
   lowStockThreshold: number;
   unitCost: number;
@@ -48,6 +49,6 @@ export interface Order {
   recipientName?: string;
   totalAmount: number;
   status: string;
-  items: { flower?: { _id: string, name: string, image: string, price: number }; quantity: number }[];
+  items: { flower?: { _id: string, name: string, image?: string, photoIds: string[], price: number }; quantity: number }[];
   createdAt: string;
 }

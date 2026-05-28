@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useSearchParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { User as UserIcon, Package, Heart, Lock, LogOut, ChevronRight } from 'lucide-react';
+import { User as UserIcon, Package, Heart, Lock, LogOut, ChevronRight, ArrowLeft } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import FlowerImage from '../components/FlowerImage';
 import { Order, Flower } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -14,7 +16,13 @@ const Spinner = () => (
 
 const UserDashboard = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('profile');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'profile';
+
+  const setActiveTab = (tab: string) => {
+    setSearchParams({ tab });
+  };
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [wishlistFlowers, setWishlistFlowers] = useState<Flower[]>([]);
   const [loading, setLoading] = useState(false);
@@ -117,6 +125,17 @@ const UserDashboard = () => {
   return (
     <div className="pt-32 pb-24 px-6 bg-bloom-cream min-h-screen">
       <div className="max-w-7xl mx-auto">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-bloom-green/60 mb-12">
+          <Link to="/" className="hover:text-bloom-pink transition-colors">Home</Link>
+          <ChevronRight size={10} className="opacity-40" />
+          <span className="text-bloom-green/40">My Dashboard</span>
+          <div className="flex-1" />
+          <Link to="/shop" className="text-bloom-pink hover:text-bloom-green transition-colors flex items-center gap-2">
+            Explore More Blooms <ChevronRight size={12} />
+          </Link>
+        </nav>
+
         <div className="flex flex-col lg:flex-row gap-12">
 
           {/* Sidebar */}
@@ -263,11 +282,15 @@ const UserDashboard = () => {
                         <div className="flex gap-6">
                           <div className="flex -space-x-4">
                             {order.items.slice(0, 3).map((item, i) => (
-                              <img
+                              <FlowerImage
                                 key={i}
-                                src={item.flower?.image}
-                                className="w-16 h-16 rounded-xl border-2 border-white object-cover"
+                                flowerName={item.flower?.name || ""}
+                                photoIds={item.flower?.photoIds || []}
+                                originalImage={item.flower?.image}
                                 alt="flower"
+                                width={64}
+                                height={64}
+                                className="w-16 h-16 rounded-xl border-2 border-white"
                               />
                             ))}
                           </div>

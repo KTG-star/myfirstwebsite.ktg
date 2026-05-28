@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
-import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import FlowerImage from '../components/FlowerImage';
 
 const CartPage = () => {
   const { cart, removeFromCart, updateQuantity, subtotal, deliveryFee, city, setCity } = useCart();
@@ -12,7 +13,17 @@ const CartPage = () => {
   return (
     <div className="pt-32 pb-24 px-6 bg-bloom-cream min-h-screen">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-cormorant text-bloom-green mb-12">Your Shopping <span className="italic">Bag</span></h1>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <div className="flex items-center gap-6">
+            <Link to="/shop" className="p-3 rounded-full bg-white shadow-sm text-bloom-green hover:bg-bloom-green hover:text-white transition-all">
+              <ArrowLeft size={20} />
+            </Link>
+            <h1 className="text-4xl md:text-6xl font-cormorant text-bloom-green">Your Shopping <span className="italic">Bag</span></h1>
+          </div>
+          <Link to="/shop" className="text-xs font-bold uppercase tracking-widest text-bloom-pink hover:text-bloom-green transition-all flex items-center gap-2 group">
+             Continue Shopping <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
 
         {cart.length === 0 ? (
           <motion.div 
@@ -42,7 +53,15 @@ const CartPage = () => {
                     exit={{ opacity: 0, x: 20 }}
                     className="glass p-6 rounded-3xl flex items-center gap-6"
                   >
-                    <img src={item.image} alt={item.name} className="w-24 h-24 md:w-32 md:h-32 rounded-2xl object-cover" />
+                    <FlowerImage 
+                      flowerName={item.name}
+                      photoIds={item.photoIds || []}
+                      originalImage={item.image}
+                      alt={item.name}
+                      width={128}
+                      height={128}
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-2xl"
+                    />
                     <div className="flex-1">
                       <h3 className="text-xl md:text-2xl font-cormorant font-bold text-bloom-green mb-1">{item.name}</h3>
                       <p className="text-bloom-pink font-bold mb-4">₦{item.price.toLocaleString()}</p>

@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,tsx}",
   ],
   theme: {
     extend: {
@@ -13,6 +14,13 @@ module.exports = {
         'bloom-gold': '#c9a84c',
         'bloom-lavender': '#e8d5f5',
         'bloom-deep': '#1a1a2e',
+        'dark-bg': '#050508',
+        'dark-card': '#0d0d14',
+        'dark-surface': '#111119',
+        'dark-border': '#1e1e2e',
+        'dark-glow-pink': '#f2c4ce',
+        'dark-glow-green': '#2d5a27',
+        'dark-glow-purple': '#7c3aed',
       },
       fontFamily: {
         cormorant: ['"Cormorant Garamond"', 'serif'],

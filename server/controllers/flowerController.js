@@ -53,7 +53,7 @@ const getFlowerById = async (req, res) => {
 // @route   POST /api/flowers
 // @access  Private/Admin
 const createFlower = async (req, res) => {
-  const { name, category, description, price, image, stockQuantity, unitCost, lowStockThreshold } = req.body;
+  const { name, category, description, price, image, photoIds, stockQuantity, unitCost, lowStockThreshold } = req.body;
 
   const flower = new Flower({
     name,
@@ -61,6 +61,7 @@ const createFlower = async (req, res) => {
     description,
     price,
     image,
+    photoIds: photoIds || [],
     stockQuantity,
     unitCost,
     lowStockThreshold
@@ -85,7 +86,7 @@ const createFlower = async (req, res) => {
 // @route   PUT /api/flowers/:id
 // @access  Private/Admin
 const updateFlower = async (req, res) => {
-  const { name, category, description, price, image, stockQuantity, unitCost, lowStockThreshold } = req.body;
+  const { name, category, description, price, image, photoIds, stockQuantity, unitCost, lowStockThreshold } = req.body;
 
   const flower = await Flower.findById(req.params.id);
 
@@ -96,11 +97,20 @@ const updateFlower = async (req, res) => {
     flower.description = description || flower.description;
     flower.price = price || flower.price;
     flower.image = image || flower.image;
+    flower.photoIds = photoIds || flower.photoIds;
     flower.unitCost = unitCost !== undefined ? unitCost : flower.unitCost;
     flower.lowStockThreshold = lowStockThreshold !== undefined ? lowStockThreshold : flower.lowStockThreshold;
     
     const stockChanged = stockQuantity !== undefined && stockQuantity !== flower.stockQuantity;
     flower.stockQuantity = stockQuantity !== undefined ? stockQuantity : flower.stockQuantity;
+
+    // Automated Availability Kill-Switch
+    if (flower.stockQuantity === 0) {
+      flower.isAvailable = false;
+    } else if (flower.stockQuantity > 0 && stockChanged) {
+      // Re-enable if stock is added, unless manually disabled elsewhere
+      flower.isAvailable = true; 
+    }
 
     const updatedFlower = await flower.save();
 
@@ -156,6 +166,14 @@ const updateStock = async (req, res) => {
   if (flower) {
     const oldStock = flower.stockQuantity;
     flower.stockQuantity = stockQuantity;
+    
+    // Automated Availability Kill-Switch
+    if (flower.stockQuantity === 0) {
+      flower.isAvailable = false;
+    } else if (flower.stockQuantity > 0) {
+      flower.isAvailable = true;
+    }
+
     const updatedFlower = await flower.save();
 
     emitStockUpdate(updatedFlower._id, updatedFlower.stockQuantity);

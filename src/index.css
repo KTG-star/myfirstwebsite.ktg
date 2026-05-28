@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
   --bloom-pink: #f2c4ce;
@@ -10,79 +10,579 @@
   --bloom-cream: #fdf8f0;
   --bloom-gold: #c9a84c;
   --bloom-lavender: #e8d5f5;
-  --bloom-deep: #1a1a2e;
 }
 
-body {
-  @apply bg-bloom-cream text-bloom-green font-dmsans overflow-x-hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  @apply font-cormorant;
+html {
+  scroll-behavior: smooth;
 }
 
-/* Glassmorphism utility */
-.glass {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+/* ============================================
+   DARK MODE SCROLLBAR
+   ============================================ */
+.dark ::-webkit-scrollbar { width: 5px; }
+.dark ::-webkit-scrollbar-track { background: #050508; }
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f2c4ce44, #7c3aed44);
+  border-radius: 10px;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #f2c4ce88, #7c3aed88);
+  box-shadow: 0 0 10px #f2c4ce66;
 }
 
-.glass-dark {
-  background: rgba(26, 26, 46, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* ============================================
+   SMOOTH THEME TRANSITION
+   ============================================ */
+*, *::before, *::after {
+  transition: 
+    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s ease,
+    box-shadow 0.5s ease;
 }
 
-/* Aurora Background */
-.aurora-bg {
-  background: linear-gradient(
-    -45deg, 
-    #f9c5d1, 
-    #e8d5f5, 
-    #c8e6c9, 
-    #fdf8f0
-  );
-  background-size: 400% 400%;
-  animation: aurora 15s ease infinite;
+/* ============================================
+   DARK MODE BASE
+   ============================================ */
+.dark body {
+  background-color: #050508;
+  color: #e8e0f0;
 }
 
-@keyframes aurora {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Custom Cursor */
-.custom-cursor {
-  @apply fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-bloom-gold pointer-events-none z-[9999] mix-blend-difference transition-transform duration-100 ease-out;
-}
-
-/* Transitions */
-.page-enter {
-  opacity: 0;
-  transform: translateY(20px);
-}
-.page-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 500ms, transform 500ms;
-}
-.page-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-.page-exit-active {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 500ms, transform 500ms;
-}
-
-/* Floating Petals */
-.petal {
-  position: absolute;
+/* ============================================
+   FLORAL BACKGROUND PATTERN — DARK MODE
+   ============================================ */
+.dark body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-color: #050508;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(242, 196, 206, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(124, 58, 237, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 50% 50%, rgba(45, 90, 39, 0.05) 0%, transparent 70%);
   pointer-events: none;
-  z-index: 10;
+}
+
+/* Floating petal pattern overlay */
+.dark body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cellipse cx='30' cy='15' rx='8' ry='12' fill='%23f2c4ce' fill-opacity='0.015' transform='rotate(-30 30 30)'/%3E%3Cellipse cx='45' cy='45' rx='6' ry='10' fill='%23e8d5f5' fill-opacity='0.02' transform='rotate(45 30 30)'/%3E%3Cellipse cx='15' cy='45' rx='5' ry='8' fill='%232d5a27' fill-opacity='0.025' transform='rotate(60 30 30)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* ============================================
+   DARK GLASS MORPHISM
+   ============================================ */
+.dark .glass {
+  background: rgba(13, 13, 20, 0.7) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(242, 196, 206, 0.08) !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 1px rgba(242, 196, 206, 0.03) !important;
+}
+
+/* ============================================
+   NAVBAR DARK
+   ============================================ */
+.dark nav {
+  background: rgba(5, 5, 8, 0.85) !important;
+  border-bottom: 1px solid rgba(242, 196, 206, 0.08) !important;
+  box-shadow: 
+    0 4px 30px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(242, 196, 206, 0.05) !important;
+}
+
+.dark .nav-logo span {
+  text-shadow: 
+    0 0 20px rgba(242, 196, 206, 0.8),
+    0 0 40px rgba(242, 196, 206, 0.4),
+    0 0 80px rgba(242, 196, 206, 0.2) !important;
+  color: #f2c4ce !important;
+}
+
+/* ============================================
+   HERO DARK MODE — DEEP AURORA
+   ============================================ */
+.dark .hero,
+.dark section.hero {
+  background: #050508 !important;
+}
+
+.dark .hero-bg {
+  background: 
+    radial-gradient(ellipse 100% 80% at 0% 0%, #1a0520 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 100% 0%, #0a1f0a 0%, transparent 50%),
+    radial-gradient(ellipse 60% 80% at 50% 100%, #1a0a1e 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 80% 50%, #0d0520 0%, transparent 50%),
+    #050508 !important;
+  animation: darkAurora 20s ease-in-out infinite alternate !important;
+}
+
+@keyframes darkAurora {
+  0% {
+    background: 
+      radial-gradient(ellipse 100% 80% at 0% 0%, #1a0520 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 100% 0%, #0a1f0a 0%, transparent 50%),
+      radial-gradient(ellipse 60% 80% at 50% 100%, #1a0a1e 0%, transparent 60%),
+      #050508;
+  }
+  33% {
+    background: 
+      radial-gradient(ellipse 100% 80% at 30% 20%, #200a30 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 70% 10%, #0a2a0a 0%, transparent 50%),
+      radial-gradient(ellipse 60% 80% at 20% 80%, #2a0a20 0%, transparent 60%),
+      #050508;
+  }
+  66% {
+    background: 
+      radial-gradient(ellipse 100% 80% at 60% 30%, #150a25 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 20% 60%, #0d250d 0%, transparent 50%),
+      radial-gradient(ellipse 60% 80% at 80% 20%, #250a15 0%, transparent 60%),
+      #050508;
+  }
+  100% {
+    background: 
+      radial-gradient(ellipse 100% 80% at 10% 70%, #1e0a28 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 90% 30%, #0a1a0a 0%, transparent 50%),
+      radial-gradient(ellipse 60% 80% at 40% 10%, #280a1e 0%, transparent 60%),
+      #050508;
+  }
+}
+
+/* ============================================
+   GLOW ORBS IN HERO DARK MODE
+   ============================================ */
+.dark .hero::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 196, 206, 0.08) 0%, transparent 70%);
+  top: -100px;
+  left: -100px;
+  animation: orbFloat 15s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dark .hero::after {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45, 90, 39, 0.1) 0%, transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  animation: orbFloat 18s ease-in-out infinite alternate-reverse;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, 30px) scale(1.1); }
+  66% { transform: translate(-30px, 60px) scale(0.95); }
+  100% { transform: translate(40px, -40px) scale(1.05); }
+}
+
+/* ============================================
+   FLOWER CARDS DARK MODE
+   ============================================ */
+.dark .flower-card,
+.dark [class*="rounded-3xl"],
+.dark [class*="rounded-2xl"] {
+  background: #0d0d14 !important;
+  border-color: rgba(242, 196, 206, 0.06) !important;
+}
+
+.dark .flower-card:hover {
+  box-shadow: 
+    0 0 30px rgba(242, 196, 206, 0.12),
+    0 0 60px rgba(242, 196, 206, 0.06),
+    0 0 120px rgba(124, 58, 237, 0.05),
+    0 25px 50px rgba(0, 0, 0, 0.7) !important;
+  border-color: rgba(242, 196, 206, 0.15) !important;
+}
+
+/* ============================================
+   SECTION BACKGROUNDS DARK MODE
+   ============================================ */
+.dark section {
+  background-color: transparent !important;
+}
+
+.dark section:nth-child(even) {
+  background-color: rgba(13, 13, 20, 0.5) !important;
+}
+
+.dark #shop,
+.dark #bestsellers,
+.dark [id*="shop"],
+.dark [id*="collection"] {
+  background: rgba(8, 8, 12, 0.8) !important;
+}
+
+.dark #bouquet,
+.dark #quiz,
+.dark [id*="quiz"],
+.dark [id*="bouquet"] {
+  background: rgba(13, 8, 20, 0.8) !important;
+}
+
+.dark #testimonials,
+.dark [id*="testimonial"] {
+  background: rgba(5, 10, 5, 0.8) !important;
+}
+
+/* ============================================
+   TYPOGRAPHY DARK MODE
+   ============================================ */
+.dark h1, .dark h2, .dark h3, .dark h4 {
+  color: #f0ece4 !important;
+}
+
+.dark p {
+  color: #9a94a8 !important;
+}
+
+.dark .text-bloom-green {
+  color: #7bc97a !important;
+}
+
+.dark .text-bloom-pink {
+  color: #f2c4ce !important;
+}
+
+.dark .italic {
+  color: #f2c4ce !important;
+}
+
+/* ============================================
+   PRICE GLOW DARK MODE
+   ============================================ */
+.dark [class*="price"],
+.dark [class*="font-cormorant"][class*="font-bold"] {
+  color: #c9a84c !important;
+  text-shadow: 0 0 20px rgba(201, 168, 76, 0.5), 0 0 40px rgba(201, 168, 76, 0.2) !important;
+}
+
+/* ============================================
+   BUTTONS DARK MODE
+   ============================================ */
+.dark .bg-bloom-green,
+.dark [class*="bg-bloom-green"] {
+  background-color: #1e3d1a !important;
+  box-shadow: 
+    0 0 20px rgba(45, 90, 39, 0.4),
+    0 0 40px rgba(45, 90, 39, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .bg-bloom-green:hover,
+.dark [class*="bg-bloom-green"]:hover {
+  background-color: #2d5a27 !important;
+  box-shadow: 
+    0 0 30px rgba(45, 90, 39, 0.6),
+    0 0 60px rgba(45, 90, 39, 0.3),
+    0 0 100px rgba(45, 90, 39, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ============================================
+   INPUT FIELDS DARK MODE
+   ============================================ */
+.dark input,
+.dark select,
+.dark textarea {
+  background: rgba(13, 13, 20, 0.8) !important;
+  border-color: rgba(242, 196, 206, 0.1) !important;
+  color: #e8e0f0 !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: rgba(242, 196, 206, 0.4) !important;
+  box-shadow: 
+    0 0 0 3px rgba(242, 196, 206, 0.08),
+    0 0 20px rgba(242, 196, 206, 0.1),
+    0 0 40px rgba(242, 196, 206, 0.05) !important;
+  outline: none !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(242, 196, 206, 0.25) !important;
+}
+
+/* ============================================
+   FOOTER DARK MODE
+   ============================================ */
+.dark footer {
+  background: #030305 !important;
+  border-top: 1px solid rgba(242, 196, 206, 0.06) !important;
+  box-shadow: 0 -20px 60px rgba(242, 196, 206, 0.03) !important;
+}
+
+/* ============================================
+   BADGES AND TAGS DARK MODE
+   ============================================ */
+.dark [class*="bg-white"] {
+  background: rgba(22, 22, 31, 0.9) !important;
+}
+
+.dark [class*="bg-bloom-cream"],
+.dark [class*="bg-cream"] {
+  background: #0d0d14 !important;
+}
+
+/* ============================================
+   TESTIMONIAL CARDS DARK MODE
+   ============================================ */
+.dark .testi-card,
+.dark [class*="testi"] {
+  background: rgba(13, 13, 20, 0.8) !important;
+  border: 1px solid rgba(242, 196, 206, 0.06) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ============================================
+   STAT CARDS DARK MODE
+   ============================================ */
+.dark .stat strong {
+  color: #f2c4ce !important;
+  text-shadow: 0 0 20px rgba(242, 196, 206, 0.4) !important;
+}
+
+/* ============================================
+   FLOATING PETAL DARK MODE
+   ============================================ */
+.dark .petal {
+  filter: drop-shadow(0 0 6px rgba(242, 196, 206, 0.6)) !important;
+  opacity: 0.7 !important;
+}
+
+/* ============================================
+   DARK MODE TOGGLE BUTTON
+   ============================================ */
+.theme-toggle-dark {
+  box-shadow: 
+    0 0 15px rgba(255, 200, 50, 0.5),
+    0 0 30px rgba(255, 200, 50, 0.2),
+    0 0 60px rgba(255, 150, 50, 0.1) !important;
+  color: #ffd700 !important;
+  background: rgba(255, 200, 50, 0.1) !important;
+  border: 1px solid rgba(255, 200, 50, 0.2) !important;
+}
+
+/* ============================================
+   SECTION GLOW DIVIDERS
+   ============================================ */
+.dark section::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(242, 196, 206, 0.15) 30%,
+    rgba(124, 58, 237, 0.1) 50%,
+    rgba(242, 196, 206, 0.15) 70%,
+    transparent 100%
+  );
+  box-shadow: 0 0 10px rgba(242, 196, 206, 0.1);
+  margin-top: 2px;
+}
+
+/* ============================================
+   SKELETON LOADER DARK MODE
+   ============================================ */
+.dark .skeleton-loader {
+  background: linear-gradient(
+    90deg,
+    rgba(22, 22, 31, 0.8) 25%,
+    rgba(35, 35, 50, 0.8) 50%,
+    rgba(22, 22, 31, 0.8) 75%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: shimmer 1.5s infinite !important;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================
+   ANIMATED FLOWER PARTICLES (DARK MODE ONLY)
+   ============================================ */
+@keyframes floatPetal {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+.dark .floating-particle {
+  animation: floatPetal linear infinite;
+  filter: drop-shadow(0 0 4px rgba(242, 196, 206, 0.8));
+}
+
+/* ============================================
+   BENTO GRID DARK MODE
+   ============================================ */
+.dark .bento-cell {
+  background: rgba(13, 13, 20, 0.9) !important;
+  border: 1px solid rgba(242, 196, 206, 0.06) !important;
+}
+
+.dark .bento-cell:hover {
+  border-color: rgba(242, 196, 206, 0.15) !important;
+  box-shadow: 
+    0 0 40px rgba(242, 196, 206, 0.08),
+    inset 0 0 40px rgba(242, 196, 206, 0.02) !important;
+}
+
+/* ============================================
+   QUIZ SECTION DARK MODE
+   ============================================ */
+.dark .quiz-card,
+.dark .quiz-result {
+  background: rgba(13, 8, 20, 0.9) !important;
+  border: 1px solid rgba(124, 58, 237, 0.15) !important;
+  box-shadow: 
+    0 0 40px rgba(124, 58, 237, 0.08),
+    0 20px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark .quiz-opt-btn {
+  background: rgba(22, 16, 35, 0.8) !important;
+  border-color: rgba(124, 58, 237, 0.2) !important;
+  color: #d4c8e8 !important;
+}
+
+.dark .quiz-opt-btn:hover {
+  background: rgba(124, 58, 237, 0.15) !important;
+  border-color: rgba(124, 58, 237, 0.4) !important;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.2) !important;
+  color: #e8d5f5 !important;
+}
+
+/* ============================================
+   ORDER SUMMARY DARK MODE  
+   ============================================ */
+.dark .order-summary {
+  background: rgba(13, 13, 20, 0.9) !important;
+  border-color: rgba(242, 196, 206, 0.08) !important;
+}
+
+.dark .summary-row {
+  border-color: rgba(242, 196, 206, 0.05) !important;
+  color: #9a94a8 !important;
+}
+
+/* ============================================
+   MODAL DARK MODE
+   ============================================ */
+.dark .modal {
+  background: #0d0d14 !important;
+  border: 1px solid rgba(242, 196, 206, 0.1) !important;
+  box-shadow: 
+    0 0 60px rgba(242, 196, 206, 0.08),
+    0 40px 80px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ============================================
+   DASHBOARD DARK MODE
+   ============================================ */
+.dark .dashboard-sidebar {
+  background: rgba(8, 8, 12, 0.9) !important;
+  border-right: 1px solid rgba(242, 196, 206, 0.06) !important;
+}
+
+/* ============================================
+   LOGIN/REGISTER PAGES DARK MODE
+   ============================================ */
+.dark .auth-panel {
+  background: rgba(8, 8, 12, 0.95) !important;
+  border-right: 1px solid rgba(242, 196, 206, 0.06) !important;
+}
+
+/* ============================================
+   FILTER BUTTONS DARK MODE
+   ============================================ */
+.dark .filter-btn {
+  background: rgba(13, 13, 20, 0.8) !important;
+  border-color: rgba(242, 196, 206, 0.1) !important;
+  color: #9a94a8 !important;
+}
+
+.dark .filter-btn:hover,
+.dark .filter-btn.active {
+  background: rgba(45, 90, 39, 0.3) !important;
+  border-color: rgba(45, 90, 39, 0.5) !important;
+  color: #7bc97a !important;
+  box-shadow: 0 0 15px rgba(45, 90, 39, 0.2) !important;
+}
+
+/* ============================================
+   PRODUCT PAGE DARK MODE
+   ============================================ */
+.dark .product-hero {
+  background: #050508 !important;
+}
+
+/* ============================================
+   CART PAGE DARK MODE
+   ============================================ */
+.dark .cart-item {
+  background: rgba(13, 13, 20, 0.8) !important;
+  border-color: rgba(242, 196, 206, 0.06) !important;
+}
+
+/* ============================================
+   SPECIAL GLOW EFFECTS — FLOWER THEMED
+   ============================================ */
+
+/* Pink rose glow on wishlist heart */
+.dark .wishlist-active {
+  box-shadow: 
+    0 0 15px rgba(242, 196, 206, 0.6),
+    0 0 30px rgba(242, 196, 206, 0.3),
+    0 0 60px rgba(242, 196, 206, 0.1) !important;
+}
+
+/* Green leaf glow on add to cart */
+.dark .cart-success {
+  box-shadow: 
+    0 0 15px rgba(45, 90, 39, 0.6),
+    0 0 30px rgba(45, 90, 39, 0.3) !important;
+}
+
+/* Gold glow on featured items */
+.dark .featured-badge {
+  box-shadow: 
+    0 0 10px rgba(201, 168, 76, 0.5),
+    0 0 20px rgba(201, 168, 76, 0.2) !important;
+  color: #c9a84c !important;
+  text-shadow: 0 0 10px rgba(201, 168, 76, 0.5) !important;
 }

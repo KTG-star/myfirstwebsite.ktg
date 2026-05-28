@@ -7,7 +7,13 @@ const Hero = () => {
   const petals = Array.from({ length: 15 });
 
   return (
-    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden aurora-bg">
+    <section className="relative h-screen w-full flex items-center justify-center overflow-hidden aurora-bg hero">
+      {/* Aurora Orbs - only visible in dark mode via CSS */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="aurora-orb absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-600/20" />
+        <div className="aurora-orb absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-600/20" />
+        <div className="aurora-orb absolute top-[20%] right-[10%] w-[40%] h-[40%] rounded-full bg-rose-600/20" />
+      </div>
       {/* Animated Petals */}
       {petals.map((_, i) => (
         <motion.div
@@ -42,7 +48,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-bloom-pink font-cormorant italic text-2xl md:text-3xl mb-4">
+          <h2 className="text-bloom-green/70 dark:text-bloom-pink font-cormorant italic text-2xl md:text-3xl mb-4 drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(242,196,206,0.4)]">
             Nature's Poetry in Every Petal
           </h2>
           <h1 className="text-5xl md:text-8xl font-cormorant text-bloom-green leading-tight mb-8">
@@ -95,7 +101,7 @@ const Hero = () => {
       </div>
 
       {/* Decorative gradient overlay */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-bloom-cream to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-bloom-cream to-transparent z-10 hero-bg" />
     </section>
   );
 };

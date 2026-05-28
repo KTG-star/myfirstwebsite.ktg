@@ -3,7 +3,7 @@ import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, ChevronDown, LayoutGrid, List } from 'lucide-react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { Flower } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -45,6 +45,13 @@ const ShopPage = () => {
   return (
     <div className="pt-32 pb-24 px-6 bg-bloom-cream min-h-screen">
       <div className="max-w-7xl mx-auto">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-bloom-green/60 mb-12">
+          <Link to="/" className="hover:text-bloom-pink transition-colors">Home</Link>
+          <ChevronDown size={10} className="-rotate-90 opacity-40" />
+          <span className="text-bloom-green/40">Collection</span>
+        </nav>
+
         {/* Header */}
         <div className="text-center mb-16">
           <motion.h1 
@@ -118,7 +125,7 @@ const ShopPage = () => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
             >
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="aspect-[4/5] rounded-3xl bg-white/40 animate-pulse" />
+                <div key={i} className="aspect-[4/5] rounded-3xl skeleton-loader" />
               ))}
             </motion.div>
           ) : (

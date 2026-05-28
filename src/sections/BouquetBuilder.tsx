@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { TextPlugin } from 'gsap/TextPlugin';
 import { Check, ChevronRight, ChevronLeft, ShoppingCart } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import FlowerImage from '../components/FlowerImage';
 
 gsap.registerPlugin(TextPlugin);
 
@@ -14,15 +15,15 @@ const STEPS = [
 ];
 
 const BASES = [
-  { id: 'b1', name: 'Classic Red Roses', price: 50, image: 'https://images.unsplash.com/photo-1548013146-72479768b921?auto=format&fit=crop&q=80&w=400' },
-  { id: 'b2', name: 'White Lilies', price: 45, image: 'https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&q=80&w=400' },
-  { id: 'b3', name: 'Mixed Wildflowers', price: 40, image: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&q=80&w=400' }
+  { id: 'b1', name: 'Classic Red Roses', price: 50, photoIds: ['1548013146-72479768b921'] },
+  { id: 'b2', name: 'White Lilies', price: 45, photoIds: ['1508610048659-a06b669e3321'] },
+  { id: 'b3', name: 'Mixed Wildflowers', price: 40, photoIds: ['1490750967868-88aa4486c946'] }
 ];
 
 const WRAPS = [
-  { id: 'w1', name: 'Eco-Kraft Paper', price: 0, image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&q=80&w=400' },
-  { id: 'w2', name: 'Premium Silk Ribbon', price: 10, image: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?auto=format&fit=crop&q=80&w=400' },
-  { id: 'w3', name: 'Gold Foil Luxe', price: 15, image: 'https://images.unsplash.com/photo-1530103862676-fa8c9d3433b7?auto=format&fit=crop&q=80&w=400' }
+  { id: 'w1', name: 'Eco-Kraft Paper', price: 0, photoIds: ['1606760227091-3dd870d97f1d'] },
+  { id: 'w2', name: 'Premium Silk Ribbon', price: 10, photoIds: ['1513519245088-0e12902e35ca'] },
+  { id: 'w3', name: 'Gold Foil Luxe', price: 15, photoIds: ['1530103862676-fa8c9d3433b7'] }
 ];
 
 const BouquetBuilder = () => {
@@ -55,7 +56,7 @@ const BouquetBuilder = () => {
       name: `Custom Bouquet (${selectedBase.name})`,
       price: totalPrice,
       quantity: 1,
-      image: selectedBase.image
+      photoIds: selectedBase.photoIds
     });
     alert('Bouquet added to cart!');
     setStep(1);
@@ -97,12 +98,14 @@ const BouquetBuilder = () => {
                 exit={{ opacity: 0, scale: 1.1 }}
                 className="relative w-full h-full"
               >
-                <img 
-                  src={selectedBase.image} 
-                  alt="Preview" 
-                  className="w-full h-full object-cover rounded-2xl shadow-2xl" 
+                <FlowerImage 
+                  flowerName={selectedBase.name}
+                  photoIds={selectedBase.photoIds}
+                  originalImage={selectedBase.image}
+                  alt="Preview"
+                  className="w-full h-full rounded-2xl shadow-2xl"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bloom-green/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-bloom-green/40 to-transparent pointer-events-none" />
                 <div className="absolute bottom-8 left-8 right-8 text-white">
                    <p className="text-xs uppercase tracking-widest opacity-70 mb-2">Live Preview</p>
                    <h3 className="text-3xl font-cormorant">{selectedBase.name}</h3>
@@ -135,7 +138,14 @@ const BouquetBuilder = () => {
                           }`}
                         >
                           <div className="flex items-center gap-4 text-left">
-                            <img src={b.image} className="w-16 h-16 rounded-xl object-cover" />
+                            <FlowerImage 
+                              flowerName={b.name}
+                              photoIds={b.photoIds}
+                              alt={b.name}
+                              width={64}
+                              height={64}
+                              className="w-16 h-16 rounded-xl"
+                            />
                             <div>
                               <p className="font-semibold text-bloom-green">{b.name}</p>
                               <p className="text-xs text-bloom-green/60">Starting at ${b.price}</p>
@@ -167,7 +177,14 @@ const BouquetBuilder = () => {
                           }`}
                         >
                           <div className="flex items-center gap-4 text-left">
-                            <img src={w.image} className="w-16 h-16 rounded-xl object-cover" />
+                            <FlowerImage 
+                              flowerName={w.name}
+                              photoIds={w.photoIds}
+                              alt={w.name}
+                              width={64}
+                              height={64}
+                              className="w-16 h-16 rounded-xl"
+                            />
                             <div>
                               <p className="font-semibold text-bloom-green">{w.name}</p>
                               <p className="text-xs text-bloom-green/60">+{w.price === 0 ? 'Free' : `$${w.price}`}</p>

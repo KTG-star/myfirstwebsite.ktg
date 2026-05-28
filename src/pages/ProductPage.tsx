@@ -4,8 +4,9 @@ import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { ShoppingBag, Heart, ArrowLeft, Truck, RefreshCw, ShieldCheck, Star } from 'lucide-react';
+import { ShoppingBag, Heart, ArrowLeft, Truck, RefreshCw, ShieldCheck, Star, ChevronRight, Plus, Minus, Loader2 } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import FlowerImage from '../components/FlowerImage';
 import { Flower } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -66,19 +67,30 @@ const ProductPage = () => {
   return (
     <div className="pt-32 pb-24 px-6 bg-bloom-cream">
       <div className="max-w-7xl mx-auto">
-        <Link to="/shop" className="flex items-center gap-2 text-bloom-green/60 hover:text-bloom-green transition-colors mb-12 group">
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" /> Back to Collection
-        </Link>
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-bloom-green/60 mb-12">
+          <Link to="/" className="hover:text-bloom-pink transition-colors">Home</Link>
+          <ChevronRight size={10} className="opacity-40" />
+          <Link to="/shop" className="hover:text-bloom-pink transition-colors">Collection</Link>
+          <ChevronRight size={10} className="opacity-40" />
+          <span className="text-bloom-green/40">{flower.name}</span>
+        </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Image Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl"
           >
-            <img src={flower.image} alt={flower.name} className="absolute inset-0 w-full h-full object-cover" />
-            <button 
+            <FlowerImage 
+              flowerName={flower.name}
+              photoIds={flower.photoIds || []}
+              originalImage={flower.image}
+              alt={flower.name}
+              className="absolute inset-0 w-full h-full"
+            />
+            <button
               onClick={() => toggleWishlist(flower._id)}
               className={`absolute top-8 right-8 p-4 rounded-full backdrop-blur-md transition-all shadow-lg ${
                 isLiked ? 'bg-bloom-pink text-white' : 'bg-white/40 text-bloom-green hover:bg-white/60'
@@ -181,9 +193,5 @@ const ProductPage = () => {
     </div>
   );
 };
-
-const Plus = ({ size }: { size: number }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
-const Minus = ({ size }: { size: number }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
-const Loader2 = ({ size, className }: { size: number, className?: string }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>;
 
 export default ProductPage;

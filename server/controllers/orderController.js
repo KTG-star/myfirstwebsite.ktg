@@ -27,7 +27,9 @@ const placeOrder = async (req, res) => {
     city,
     deliveryDate,
     timeSlot,
-    giftMessage
+    giftMessage,
+    paymentReference,
+    paymentStatus
   } = req.body;
 
   if (!items || items.length === 0) {
@@ -70,7 +72,9 @@ const placeOrder = async (req, res) => {
     timeSlot,
     giftMessage,
     deliveryFee,
-    totalAmount
+    totalAmount,
+    paymentReference,
+    paymentStatus: paymentStatus || 'pending'
   });
 
   const createdOrder = await order.save();
@@ -80,6 +84,12 @@ const placeOrder = async (req, res) => {
     const flower = await Flower.findById(item.flowerId);
     flower.stockQuantity -= item.quantity;
     flower.sold += item.quantity;
+    
+    // Automated Availability Kill-Switch
+    if (flower.stockQuantity === 0) {
+      flower.isAvailable = false;
+    }
+    
     await flower.save();
     emitStockUpdate(flower._id, flower.stockQuantity);
   }
@@ -114,28 +124,38 @@ const updateOrderStatus = async (req, res) => {
     order.status = req.body.status || order.status;
     const updatedOrder = await order.save();
 
-    // Log the activity with specific roles based on status
-    let role = 'support';
+    // Map roles for logging based on status if actor is generic admin
+    let logRole = req.user.role === 'admin' ? 'support' : req.user.role;
     let action = 'UPDATE_STATUS';
     let details = `Updated order #${order._id.slice(-6).toUpperCase()} status from ${oldStatus} to ${order.status}`;
     
     if (order.status === 'Confirmed') {
-      role = 'florist';
-      action = 'ORDER_ACCEPTED';
-      details = `Florist accepted order #${order._id.slice(-6).toUpperCase()}`;
+      logRole = req.user.role === 'admin' ? 'manager' : req.user.role;
+      action = 'ORDER_CONFIRMED';
+    } else if (order.status === 'Preparing') {
+      logRole = req.user.role === 'admin' ? 'florist' : req.user.role;
+      action = 'BOUQUET_PREPARATION';
+      details = `Florist started preparing bouquet for order #${order._id.slice(-6).toUpperCase()}`;
+    } else if (order.status === 'Ready for Delivery') {
+      logRole = req.user.role === 'admin' ? 'florist' : req.user.role;
+      action = 'READY_FOR_DELIVERY';
+      details = `Bouquet prepared and marked ready for delivery for order #${order._id.slice(-6).toUpperCase()}`;
     } else if (order.status === 'Out for Delivery') {
-      role = 'driver';
+      logRole = req.user.role === 'admin' ? 'driver' : req.user.role;
       action = 'OUT_FOR_DELIVERY';
       details = `Driver picked up order #${order._id.slice(-6).toUpperCase()} for delivery`;
     } else if (order.status === 'Delivered') {
-      role = 'driver';
+      logRole = req.user.role === 'admin' ? 'driver' : req.user.role;
       action = 'ORDER_DELIVERED';
       details = `Order #${order._id.slice(-6).toUpperCase()} successfully delivered`;
+    } else if (order.status === 'Cancelled') {
+      logRole = req.user.role === 'admin' ? 'support' : req.user.role;
+      action = 'ORDER_CANCELLED';
     }
 
     await createLog(
       req.user._id,
-      role,
+      logRole,
       action,
       'Order',
       order._id,

@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, User, LogOut, Menu, X, Heart } from 'lucide-react';
+import { ShoppingBag, User, LogOut, Menu, X, Heart, ArrowLeft, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { cart } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,29 +36,69 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="relative z-50 group">
-          <h1 className="text-2xl md:text-3xl font-cormorant font-bold text-bloom-green">
-            Kevin's <span className="text-bloom-pink group-hover:text-bloom-gold transition-colors">Blooms</span>
-          </h1>
-        </Link>
+        <div className="flex items-center gap-6">
+          {!isHome && (
+            <button 
+              onClick={() => navigate(-1)}
+              className="p-2.5 rounded-full bg-white shadow-sm text-bloom-green hover:bg-bloom-pink hover:text-white transition-all group"
+              title="Go Back"
+            >
+              <ArrowLeft size={18} className="group-active:-translate-x-1 transition-transform" />
+            </button>
+          )}
+          {/* Logo */}
+          <Link to="/" className="relative z-50 group nav-logo">
+            <h1 className="text-2xl md:text-3xl font-cormorant font-bold text-bloom-green">
+              Kevin's <span className="text-bloom-pink group-hover:text-bloom-gold transition-colors">Blooms</span>
+            </h1>
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-12">
-          {['Shop', 'Occasions', 'About', 'Contact'].map((item) => (
+        <div className="hidden lg:flex items-center gap-12">
+          {[
+            { label: 'Shop All', path: '/shop' },
+            { label: 'Bestsellers', path: '/shop?sort=Most Popular' },
+            { label: 'Collections', path: '/shop' },
+            { label: 'Occasions', path: '/shop' },
+          ].map((item) => (
             <Link 
-              key={item}
-              to={item === 'Shop' ? '/shop' : '#'}
-              className="relative text-sm font-medium uppercase tracking-widest text-bloom-green/80 hover:text-bloom-pink transition-colors group"
+              key={item.label}
+              to={item.path}
+              className="relative text-[10px] font-bold uppercase tracking-widest text-bloom-green/60 hover:text-bloom-pink transition-colors group"
             >
-              {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-bloom-pink transition-all duration-300 group-hover:w-full" />
+              {item.label}
+              <span className="absolute -bottom-2 left-0 w-0 h-[1.5px] bg-bloom-pink transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-6">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+              theme === 'dark' 
+                ? 'theme-toggle-dark' 
+                : 'bg-white shadow-sm text-bloom-green'
+            }`}
+            aria-label="Toggle dark mode"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={theme}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
+
           <Link to="/cart" className="relative group">
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -79,11 +124,17 @@ const Navbar = () => {
 
           {user ? (
             <div className="flex items-center gap-4">
-              <Link to="/dashboard" className="hidden md:flex items-center gap-2 group">
+              <Link 
+                to={user.role === 'admin' ? '/admin' : '/dashboard'} 
+                className="hidden md:flex items-center gap-2 group"
+              >
                 <div className="w-8 h-8 rounded-full bg-bloom-pink/20 flex items-center justify-center text-bloom-pink group-hover:bg-bloom-pink group-hover:text-white transition-all">
                   <User size={18} />
                 </div>
-                <span className="text-sm font-medium text-bloom-green/80">{user.fullName.split(' ')[0]}</span>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-bloom-green/80 leading-none">{user.fullName.split(' ')[0]}</span>
+                  {user.role === 'admin' && <span className="text-[10px] font-bold text-bloom-pink uppercase tracking-tighter">Admin</span>}
+                </div>
               </Link>
               <button 
                 onClick={logout}
@@ -125,14 +176,19 @@ const Navbar = () => {
             className="md:hidden bg-bloom-cream border-t border-bloom-green/10 overflow-hidden"
           >
             <div className="p-8 flex flex-col gap-6">
-              {['Shop', 'Occasions', 'About', 'Contact'].map((item) => (
+              {[
+                { label: 'Shop All', path: '/shop' },
+                { label: 'Bestsellers', path: '/shop?sort=Most Popular' },
+                { label: 'Collections', path: '/shop' },
+                { label: 'Occasions', path: '/shop' },
+              ].map((item) => (
                 <Link 
-                  key={item}
-                  to={item === 'Shop' ? '/shop' : '#'}
+                  key={item.label}
+                  to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-2xl font-cormorant text-bloom-green hover:text-bloom-pink transition-colors"
                 >
-                  {item}
+                  {item.label}
                 </Link>
               ))}
               <div className="pt-6 border-t border-bloom-green/10">

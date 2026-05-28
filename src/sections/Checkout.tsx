@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingBag, CreditCard, CheckCircle, X } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import FlowerImage from '../components/FlowerImage';
 
 interface CheckoutFormData {
   fullName: string;
@@ -139,7 +140,14 @@ const Checkout = () => {
             <div className="space-y-4">
               {cart.map(item => (
                 <div key={item.id} className="flex gap-4 items-center bg-bloom-pink/5 p-4 rounded-3xl border border-bloom-pink/10">
-                  <img src={item.image} className="w-20 h-20 rounded-2xl object-cover" alt={item.name} />
+                  <FlowerImage 
+                    flowerName={item.name}
+                    photoIds={item.photoIds || []}
+                    alt={item.name}
+                    width={80}
+                    height={80}
+                    className="w-20 h-20 rounded-2xl"
+                  />
                   <div className="flex-1">
                     <h4 className="font-cormorant font-semibold text-bloom-green">{item.name}</h4>
                     <p className="text-sm text-bloom-green/60">Qty: {item.quantity}</p>

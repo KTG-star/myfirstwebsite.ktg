@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ShoppingBag, ArrowUpRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
 import { Flower } from '../types';
+
+import FlowerImage from './FlowerImage';
 
 interface ProductCardProps {
   flower: Flower;
@@ -17,6 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [added, setAdded] = useState(false);
   const [showPetals, setShowPetals] = useState(false);
+  const navigate = useNavigate();
 
   const isLiked = wishlist?.includes(flower._id);
 
@@ -32,7 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
     e.preventDefault();
     e.stopPropagation();
     if (!user) {
-      // Handle redirect to login or show toast
+      navigate('/login');
       return;
     }
     
@@ -49,13 +51,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
       whileHover={{ y: -8 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="relative group rounded-3xl overflow-hidden aspect-[4/5] bg-bloom-cream shadow-sm"
+      className="relative group rounded-3xl overflow-hidden aspect-[4/5] bg-bloom-cream shadow-sm flower-card"
     >
-      <Link to={`/shop/${flower._id}`}>
-        <img 
-          src={flower.image} 
+        {/* Main Clickable Area */}
+        <Link to={`/shop/${flower._id}`} className="absolute inset-0 z-10">
+          <span className="sr-only">View {flower.name}</span>
+        </Link>
+
+        <FlowerImage 
+          flowerName={flower.name}
+          photoIds={flower.photoIds || []}
+          originalImage={flower.image}
           alt={flower.name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:scale-110"
         />
         
         {/* Liked Petal Burst */}
@@ -81,7 +89,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
           )}
         </AnimatePresence>
 
-        {/* Top Actions */}
+        {/* Top Actions - High Z-Index to stay clickable over the Link */}
         <div className="absolute top-4 right-4 z-20 flex flex-col gap-2">
           <motion.button
             whileHover={{ scale: 1.1 }}
@@ -118,8 +126,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
 
         {/* Glass Panel */}
         <motion.div 
-          animate={{ height: isHovered ? '45%' : '35%' }}
-          className="absolute bottom-0 left-0 w-full glass p-6 flex flex-col justify-end transition-all duration-500"
+          animate={{ height: isHovered ? '60%' : '35%' }}
+          className="absolute bottom-0 left-0 w-full glass p-6 flex flex-col justify-end transition-all duration-500 z-20"
         >
           <div className="flex justify-between items-start mb-2">
             <div>
@@ -130,15 +138,23 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
                 {flower.name}
               </h3>
             </div>
-            <p className="text-lg font-cormorant font-bold text-bloom-green">
+            <p className="text-lg font-cormorant font-bold text-bloom-green flower-price">
               ₦{flower.price.toLocaleString()}
             </p>
           </div>
 
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            className="text-xs text-bloom-green/70 line-clamp-2 mb-4 font-dmsans"
+          >
+            {flower.description}
+          </motion.p>
+
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-            className="flex items-center justify-between mt-4"
+            className="flex items-center justify-between"
           >
             <button
               disabled={flower.stockQuantity === 0}
@@ -167,7 +183,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ flower }) => {
             </div>
           </motion.div>
         </motion.div>
-      </Link>
     </motion.div>
   );
 };

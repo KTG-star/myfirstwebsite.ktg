@@ -20,7 +20,12 @@ const flowerSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true // Ensuring image is present as requested
+    required: false
+  },
+  photoIds: {
+    type: [String],
+    required: true,
+    default: []
   },
   stockQuantity: {
     type: Number,
@@ -40,6 +45,10 @@ const flowerSchema = new mongoose.Schema({
   sold: {
     type: Number,
     default: 0
+  },
+  isAvailable: {
+    type: Boolean,
+    default: true
   }
 }, {
   timestamps: true

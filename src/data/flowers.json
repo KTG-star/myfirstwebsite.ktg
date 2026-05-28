@@ -1,0 +1,122 @@
+[
+  {
+    "id": "1",
+    "name": "Red Velvet Roses",
+    "category": "Roses",
+    "description": "A classic bouquet of deep red roses, perfect for expressing love and passion.",
+    "price": 15000,
+    "image": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1518709268805-4e9042af9f23", "1496062031456-07b8f162a322", "1459411552884-841db9b3cc2a"],
+    "stockQuantity": 25
+  },
+  {
+    "id": "2",
+    "name": "Sunshine Tulips",
+    "category": "Tulips",
+    "description": "Bright and cheerful yellow tulips to bring a smile to anyone's face.",
+    "price": 12000,
+    "image": "https://images.unsplash.com/photo-1490750967868-88df5691cc5e?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1490750967868-88df5691cc5e", "1520302630591-df1c64ecb1c2", "1550948537-130a1ce83314"],
+    "stockQuantity": 15
+  },
+  {
+    "id": "3",
+    "name": "Elegant Lilies",
+    "category": "Lilies",
+    "description": "Pure white lilies that symbolize peace and purity. Ideal for formal occasions.",
+    "price": 18000,
+    "image": "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1508193638397-1c4234db14d8", "1507290439931-a861b5a38200", "1513072223053-fa7b49466543"],
+    "stockQuantity": 8
+  },
+  {
+    "id": "4",
+    "name": "Golden Sunflowers",
+    "category": "Sunflowers",
+    "description": "Large, radiant sunflowers that follow the sun. A symbol of loyalty and longevity.",
+    "price": 10000,
+    "image": "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1597848212624-a19eb35e2651", "1589135080068-07b22a0f8624", "1501746768913-4081b7f08d3e"],
+    "stockQuantity": 20
+  },
+  {
+    "id": "5",
+    "name": "Purple Orchid Delight",
+    "category": "Orchids",
+    "description": "Exotic purple orchids that add a touch of luxury and mystery to any room.",
+    "price": 25000,
+    "image": "https://images.unsplash.com/photo-1566694271453-390536dd1f0d?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1566694271453-390536dd1f0d", "1486848521211-189f76f44c4b", "1554631221-f9603e6808be"],
+    "stockQuantity": 5
+  },
+  {
+    "id": "6",
+    "name": "Pink Peony Perfection",
+    "category": "Peonies",
+    "description": "Lush and fragrant pink peonies, a seasonal favorite for weddings and celebrations.",
+    "price": 22000,
+    "image": "https://images.unsplash.com/photo-1487530811015-780bab8b3621?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1487530811015-780bab8b3621", "1527061011665-3652c757a4d4", "1519163219899-21d2bb723b3e"],
+    "stockQuantity": 10
+  },
+  {
+    "id": "7",
+    "name": "Lavender Fields",
+    "category": "Seasonal",
+    "description": "Calming and aromatic lavender, perfect for relaxation and peace.",
+    "price": 9000,
+    "image": "https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1468327768560-75b778cbb551", "1515224526905-51c7d77c7bb8", "1565123409695-1886131c7931"],
+    "stockQuantity": 30
+  },
+  {
+    "id": "8",
+    "name": "Wild Daisies",
+    "category": "Other",
+    "description": "Simple and sweet white daisies, bringing the freshness of the meadow to your home.",
+    "price": 7000,
+    "image": "https://images.unsplash.com/photo-1502977249166-824b3a8a4d6d?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1502977249166-824b3a8a4d6d", "1560717789-0ac7c58ac90a", "1533481406255-7a4b69d72f40"],
+    "stockQuantity": 40
+  },
+  {
+    "id": "9",
+    "name": "Blue Hydrangeas",
+    "category": "Other",
+    "description": "Stunning blue hydrangeas with voluminous petals for a dramatic floral display.",
+    "price": 20000,
+    "image": "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1561181286-d3fee7d55364", "1530234773822-a7f457541f99", "1553105659-191e775c748d"],
+    "stockQuantity": 12
+  },
+  {
+    "id": "10",
+    "name": "Sweet Carnations",
+    "category": "Other",
+    "description": "Ruffled carnations in various shades of pink and white, representing admiration and love.",
+    "price": 8500,
+    "image": "https://images.unsplash.com/photo-1455659817273-f96807779a8a?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1455659817273-f96807779a8a", "1519339345717-310137397779", "1533221980839-a78b598b5849"],
+    "stockQuantity": 25
+  },
+  {
+    "id": "11",
+    "name": "Winter Chrysanthemum",
+    "category": "Seasonal",
+    "description": "Resilient and beautiful chrysanthemums that bloom even in cooler weather.",
+    "price": 11000,
+    "image": "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1508610048659-a06b669e3321", "1518709414691-b016398842af", "1475731952041-0773d5267156"],
+    "stockQuantity": 18
+  },
+  {
+    "id": "12",
+    "name": "Grand Celebration Bouquet",
+    "category": "Bouquets",
+    "description": "Our most luxurious arrangement, featuring a mix of our finest seasonal blooms.",
+    "price": 45000,
+    "image": "https://images.unsplash.com/photo-1591886960571-74d43a9d4166?auto=format&fit=crop&w=600&q=80",
+    "photoIds": ["1591886960571-74d43a9d4166", "1567634459-0f4048868662", "1464692805480-a69dfafd87cb"],
+    "stockQuantity": 5
+  }
+]
